@@ -3,6 +3,8 @@ const dotenv = require("dotenv");
 const morgan = require("morgan");
 const cors = require("cors");
 const colors = require("colors");
+const path = require("path");
+const fileupload = require("express-fileupload");
 const connectDB = require("./config/db");
 const errorHandler = require("./middleware/error");
 
@@ -18,6 +20,11 @@ const app = express();
 app.use(express.json());
 // Enable CORS
 app.use(cors());
+// File uploading
+app.use(fileupload());
+
+// Set static folder
+app.use(express.static(path.join(__dirname)));
 
 // Dev logging middleware
 if (process.env.NODE_ENV === "development") {
