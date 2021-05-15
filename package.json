@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "NODE_ENV=production node index",
-    "dev": "nodemon index"
+    "dev": "nodemon index",
+    "data:import": "node seeder -i",
+    "data:destroy": "node seeder -d"
   },
   "author": "Barender Singh",
   "license": "ISC",
