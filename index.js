@@ -1,11 +1,16 @@
+const path = require("path");
+const cors = require("cors");
+const hpp = require("hpp");
 const express = require("express");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
-const cors = require("cors");
 const colors = require("colors");
-const path = require("path");
+const helmet = require("helmet");
+const xss = require("xss-clean");
 const cookieParser = require("cookie-parser");
 const fileupload = require("express-fileupload");
+const mongoSanitize = require("express-mongo-sanitize");
+const rateLimit = require("express-rate-limit");
 const connectDB = require("./config/db");
 const errorHandler = require("./middleware/error");
 
@@ -25,6 +30,18 @@ app.use(cookieParser());
 app.use(cors());
 // File uploading
 app.use(fileupload());
+// Sanitize data
+app.use(mongoSanitize());
+// Set security headers
+app.use(helmet());
+// Prevent XSS attacks
+app.use(xss());
+// Rate limiting
+const limiter = rateLimit({
+  windowMs: 10 * 60 * 1000, // 10 mins
+  max: 100,
+});
+app.use(limiter);
 
 // Set static folder
 app.use(express.static(path.join(__dirname)));
